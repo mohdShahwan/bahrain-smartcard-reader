@@ -1,8 +1,10 @@
-var pcsc = require("pcsclite");
+import pcsc from "pcsclite";
 
-var pcsc = pcsc();
+const pcsclite = pcsc();
 
-pcsc.on("reader", function (reader) {
+let smartcardData = {};
+
+pcsclite.on("reader", function (reader) {
   console.log("New reader detected", reader.name);
 
   reader.on("error", function (err) {
@@ -99,7 +101,36 @@ pcsc.on("reader", function (reader) {
                                         err
                                       );
                                     } else {
-                                      console.log(response.toString("utf8"));
+                                      const data = response.toString("utf8");
+                                      smartcardData = {
+                                        cprNumber:
+                                          data.substring(0, 9).trim().length ===
+                                          8
+                                            ? "0" + data.substring(0, 9).trim()
+                                            : data.substring(0, 9).trim(),
+                                        firstNameEn: data
+                                          .substring(9, 41)
+                                          .trim(),
+                                        middleName1En: data
+                                          .substring(41, 73)
+                                          .trim(),
+                                        middleName2En: data
+                                          .substring(73, 105)
+                                          .trim(),
+                                        middleName3En: data
+                                          .substring(105, 137)
+                                          .trim(),
+                                        middleName4En: data
+                                          .substring(137, 169)
+                                          .trim(),
+                                        lastNameEn: data
+                                          .substring(169, 201)
+                                          .trim(),
+                                        firstNameAr: data
+                                          .substring(201, data.length - 2)
+                                          .trim(),
+                                      };
+                                      console.log(smartcardData);
                                     }
                                   }
                                 );
@@ -124,8 +155,6 @@ pcsc.on("reader", function (reader) {
   });
 });
 
-
-
-pcsc.on("error", function (err) {
+pcsclite.on("error", function (err) {
   console.log("PCSC error", err.message);
 });
