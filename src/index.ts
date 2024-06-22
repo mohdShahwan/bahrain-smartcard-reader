@@ -123,8 +123,43 @@ async function readSmartcard1(reader, protocol) {
   return smartcardData;
 }
 
+// V1
 function readSmartcard(reader, protocol) {
-  
+  // Select CPR Dedicated File
+  const selectCprDf = Buffer.from("00A404000BF000000078010001435052", "hex");
+  const cprDfSize = 11299;
+  reader.transmit(selectCprDf, cprDfSize, protocol, function (err, response) {
+    if (err) {
+      console.error("Error selecting CPR DF:", err);
+    } else {
+      // Select CPR First Elementary File
+      const selectCprEf1 = Buffer.from("80A40804020001", "hex");
+      const cprEf1Size = 610;
+      reader.transmit(
+        selectCprEf1,
+        cprEf1Size,
+        protocol,
+        function (err, response) {
+          if (err) {
+            console.error("Error selecting CPR first elementary file:", err);
+          } else {
+            /*
+            First elementary file will contain:
+            - Full name in arabic: 6 names * 64 byte each
+            - Blood group: 3 bytes
+            - CPR number: 9 bytes
+            - Date of birth: 8 bytes
+            - Full name in english: 6 names * 32 byte each
+            - Gender: 1 byte
+            - CPR expiry date: 8 bytes
+          */
+            const data = response.toString("utf8");
+            console.log("Hello");
+          }
+        }
+      );
+    }
+  });
 }
 
 function triggerFunction() {

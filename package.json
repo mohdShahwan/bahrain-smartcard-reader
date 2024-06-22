@@ -7,7 +7,7 @@
   "scripts": {
     "build": "tsc",
     "start": "node dist/index.js",
-    "dev": "npx tsx ./src/index.ts"
+    "dev": "npx tsx watch ./src/index.ts"
   },
   "author": "",
   "license": "ISC",
