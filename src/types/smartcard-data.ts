@@ -14,9 +14,11 @@ export interface SmartcardData {
   middleNameAr4?: string;
   lastNameAr?: string;
   fullNameAr?: string;
+  gender?: "M" | "F";
+  birthDate?: Date;
+  bloodGroup?: "A+" | "A-" | "B+" | "B-" | "O+" | "O-" | "AB+" | "AB-";
   AddressArabic?: string;
   AddressEnglish?: string;
-  BirthDate?: string;
   CardCountry?: string;
   CardexpiryDate?: string;
   CardIssueDate?: string;
@@ -27,7 +29,6 @@ export interface SmartcardData {
   EmploymentNameArabic?: string;
   EmploymentNameEnglish?: string;
   FingerprintCode?: string;
-  Gender?: string;
   IacoNationalityCode?: string;
   IsoNationalityCode?: string;
   IdNumber?: string;
@@ -42,7 +43,6 @@ export interface SmartcardData {
     MiddleName2Arabic?: string;
     MiddleName3Arabic?: string;
     MiddleName4Arabic?: string;
-    BloodGroup?: string;
     CPRNO?: string;
     DateOfBirth?: string;
     FirstNameEnglish?: string;

@@ -1,10 +1,13 @@
 import pcsc from "pcsclite";
 import { SmartcardData } from "./types/smartcard-data";
+import processDateString from "./helpers/processDateString";
 
 const pcsclite = pcsc();
 
 let globalReader: any = null;
 let globalProtocol: any = null;
+
+type bloodGroup = "A+" | "A-" | "B+" | "B-" | "O+" | "O-" | "AB+" | "AB-";
 
 // V2
 function readSmartcard(reader, protocol) {
@@ -54,7 +57,9 @@ function readSmartcard(reader, protocol) {
                           err
                         );
                       } else {
-                        const data = response.toString("utf8");
+                        const data: string = response
+                          .toString("utf8")
+                          .replace("�\x00", "");
 
                         cpr1Data.cprNumber =
                           data.substring(0, 9).trim().length === 8
@@ -85,9 +90,7 @@ function readSmartcard(reader, protocol) {
                         }${
                           middleNameEn4 ? middleNameEn4 + " " : ""
                         }${lastNameEn}`;
-                        cpr1Data.firstNameAr = data
-                          .substring(201, data.length)
-                          .trim();
+                        cpr1Data.firstNameAr = data.substring(201, data.length);
                       }
                     }
                   );
@@ -100,23 +103,71 @@ function readSmartcard(reader, protocol) {
                     secondRecordSize,
                     protocol,
                     function (err, response) {
-                      const data = response.toString("utf8");
-                      console.log(data);
                       let lock: boolean = true;
-                      while (lock) {
-                        if (cpr1Data.firstNameAr) {
-                          lock = false;
-                        }
-                      }
+                      while (lock) if ("firstNameAr" in cpr1Data) lock = false;
+
+                      const data: string = response
+                        .toString("utf8")
+                        .replace("�\x00", "");
+                      cpr1Data.firstNameAr = (
+                        cpr1Data.firstNameAr + data.substring(0, 10)
+                      ).trim();
+                      cpr1Data.middleNameAr1 = data.substring(10, 70).trim();
+                      cpr1Data.middleNameAr2 = data.substring(70, 130).trim();
+                      cpr1Data.middleNameAr3 = data.substring(130, 200).trim();
+                      cpr1Data.middleNameAr4 = data.substring(200, data.length);
                     }
                   );
 
+                  // Select third record
                   const selectThirdRecord = Buffer.from("00B001FE57", "hex");
+                  const thirdRecordSize = 89;
+                  reader.transmit(
+                    selectThirdRecord,
+                    thirdRecordSize,
+                    protocol,
+                    function (err, response) {
+                      let lock: boolean = true;
+                      while (lock)
+                        if ("middleNameAr4" in cpr1Data) lock = false;
+
+                      const data: string = response
+                        .toString("utf8")
+                        .replace("�\x00", "");
+
+                      cpr1Data.middleNameAr4 = (
+                        cpr1Data.middleNameAr4 + data.substring(0, 11)
+                      ).trim();
+                      cpr1Data.lastNameAr = data.substring(11, 70).trim();
+                      const {
+                        firstNameAr,
+                        middleNameAr1,
+                        middleNameAr2,
+                        middleNameAr3,
+                        middleNameAr4,
+                        lastNameAr,
+                      } = cpr1Data;
+
+                      cpr1Data.fullNameAr = `${firstNameAr} ${
+                        middleNameAr1 ? middleNameAr1 + " " : ""
+                      }${middleNameAr2 ? middleNameAr2 + " " : ""}${
+                        middleNameAr3 ? middleNameAr3 + " " : ""
+                      }${
+                        middleNameAr4 ? middleNameAr4 + " " : ""
+                      }${lastNameAr}`;
+                      cpr1Data.gender = data[70] as "M" | "F";
+                      const birthDateString = data.substring(71, 79);
+                      cpr1Data.birthDate = processDateString(birthDateString);
+                      cpr1Data.bloodGroup = data
+                        .substring(79, data.length)
+                        .trim() as bloodGroup;
+                    }
+                  );
 
                   // Testing
                   setTimeout(function () {
                     console.log(cpr1Data);
-                  }, 1000);
+                  }, 300);
                 }
               }
             );
