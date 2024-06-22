@@ -6,7 +6,7 @@ const pcsclite = pcsc();
 let globalReader: any = null;
 let globalProtocol: any = null;
 
-async function readSmartcard(reader, protocol) {
+async function readSmartcard1(reader, protocol) {
   let smartcardData: any = {};
   // Select DF by name
   const selectApduCommand = Buffer.from([
@@ -123,6 +123,10 @@ async function readSmartcard(reader, protocol) {
   return smartcardData;
 }
 
+function readSmartcard(reader, protocol) {
+  
+}
+
 function triggerFunction() {
   if (globalReader && globalProtocol) {
     console.log("Trigger condition met. Calling function...");
@@ -173,6 +177,7 @@ pcsclite.on("reader", function (reader) {
               console.log("Protocol(", reader.name, "):", protocol);
               globalReader = reader;
               globalProtocol = protocol;
+              triggerFunction();
             }
           }
         );
@@ -188,8 +193,3 @@ pcsclite.on("reader", function (reader) {
 pcsclite.on("error", function (err) {
   console.log("PCSC error", err.message);
 });
-
-setTimeout(async () => {
-  console.log("Attempting to trigger function...");
-  triggerFunction();
-}, 2000);
