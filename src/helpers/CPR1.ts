@@ -48,7 +48,7 @@ export function cpr1(reader, protocol): Promise<SmartcardData> {
   });
 }
 
-export function cpr1A(reader, protocol): Promise<SmartcardData> {
+function cpr1A(reader, protocol): Promise<SmartcardData> {
   return new Promise(function (resolve, reject) {
     const cpr1Data: SmartcardData = {};
     // Select first record
@@ -95,7 +95,7 @@ export function cpr1A(reader, protocol): Promise<SmartcardData> {
   });
 }
 
-export function cpr1B(reader, protocol): Promise<SmartcardData> {
+function cpr1B(reader, protocol): Promise<SmartcardData> {
   return new Promise(function (resolve, reject) {
     const cpr1Data: SmartcardData = {};
     // Select second record
@@ -125,7 +125,7 @@ export function cpr1B(reader, protocol): Promise<SmartcardData> {
 
 type bloodGroup = "A+" | "A-" | "B+" | "B-" | "O+" | "O-" | "AB+" | "AB-";
 
-export function cpr1C(reader, protocol): Promise<SmartcardData> {
+function cpr1C(reader, protocol): Promise<SmartcardData> {
   return new Promise(function (resolve, reject) {
     const cpr1Data: SmartcardData = {};
     // Select third record

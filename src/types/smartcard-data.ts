@@ -17,11 +17,12 @@ export interface SmartcardData {
   gender?: "M" | "F";
   birthDate?: Date;
   bloodGroup?: "A+" | "A-" | "B+" | "B-" | "O+" | "O-" | "AB+" | "AB-";
+  cardExpiryDate?: Date;
+  cardIssueDate?: Date;
+  issuingAuthority?: string;
   AddressArabic?: string;
   AddressEnglish?: string;
   CardCountry?: string;
-  CardexpiryDate?: string;
-  CardIssueDate?: string;
   CardSerialNumber?: string;
   CardVersion?: string;
   EmploymentFlag?: string;

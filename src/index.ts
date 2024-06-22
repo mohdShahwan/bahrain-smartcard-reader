@@ -1,5 +1,6 @@
 import pcsc from "pcsclite";
-import { cpr1, cpr1A, cpr1B, cpr1C } from "./helpers/CPR1";
+import { cpr1 } from "./helpers/CPR1";
+import { cpr2 } from "./helpers/CPR2";
 import { SmartcardData } from "./types/smartcard-data";
 
 const pcsclite = pcsc();
@@ -29,7 +30,13 @@ function readSmartcard(reader, protocol) {
           } else {
             // In this dedicated file, we have 6 elementary files
             const cpr1Data = await cpr1(reader, protocol);
-            console.log(cpr1Data);
+            const cpr2Data = await cpr2(reader, protocol);
+
+            const cprData: SmartcardData = {
+              ...cpr1Data,
+              ...cpr2Data,
+            };
+            console.log(cprData);
           }
         }
       );

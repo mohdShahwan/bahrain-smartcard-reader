@@ -32,4 +32,4 @@ function getLowAndHighBytes(offsetPos: number) {
   return [bytes[0], bytes[1]];
 }
 
-getBinarySelectParams(0, 597);
+getBinarySelectParams(0, 36);
