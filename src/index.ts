@@ -260,13 +260,14 @@ function readSmartcard(reader, protocol) {
                     }
                   );
 
+                  const selectSecondRecord = Buffer.from("00B000FFFF", "hex");
+                  
+                  const selectThirdRecord = Buffer.from("00B001FE57", "hex");
+                  
                   // Testing
                   setTimeout(function () {
                     console.log(cpr1Data);
                   }, 1000);
-
-                  const selectSecondRecord = Buffer.from("00B000FFFF", "hex");
-                  const selectThirdRecord = Buffer.from("00B001FE57", "hex");
                 }
               }
             );

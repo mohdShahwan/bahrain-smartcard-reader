@@ -8,6 +8,19 @@ function getBinarySelectParams(offset, length) {
     console.log(P1);
     console.log(P2);
     console.log(Le);
+    const p1String =
+      P1 < 10
+        ? "0" + P1.toString(16).toUpperCase()
+        : P1.toString(16).toUpperCase();
+    const p2String =
+      P2 < 10
+        ? "0" + P2.toString(16).toUpperCase()
+        : P2.toString(16).toUpperCase();
+    const leString =
+      Le < 10
+        ? "0" + Le.toString(16).toUpperCase()
+        : Le.toString(16).toUpperCase();
+    console.log(`00B0${p1String}${p2String}${leString}`);
     console.log("##########");
     offsetPos += Le;
     length -= Le;
