@@ -165,38 +165,58 @@ function readSmartcardV1(reader, protocol) {
 // V2
 function readSmartcard(reader, protocol) {
   // Select application
-  const selectApp = Buffer.from(
-    "00A404000DD4990000010101000100000001",
-    "hex"
-  );
+  const selectApp = Buffer.from("00A404000DD4990000010101000100000001", "hex");
   const appSize = 11100;
   reader.transmit(selectApp, appSize, protocol, function (err, response) {
     if (err) {
       console.error("Error selecting application:", err);
     } else {
-      // Select CPR First Elementary File
-      const selectCprEf1 = Buffer.from("80A40804020001", "hex");
-      const cprEf1Size = 610;
+      // Select CPR dedicated file
+      const selectCprDf = Buffer.from("00A4000C020101", "hex");
+      const cprDfSize = 2;
       reader.transmit(
-        selectCprEf1,
-        cprEf1Size,
+        selectCprDf,
+        cprDfSize,
         protocol,
         function (err, response) {
           if (err) {
-            console.error("Error selecting CPR first elementary file:", err);
+            console.error("Error selecting CPR dedicated file:", err);
           } else {
-            /*
-              First elementary file will contain:
-              - Full name in arabic: 6 names * 64 byte each
-              - Blood group: 3 bytes
-              - CPR number: 9 bytes
-              - Date of birth: 8 bytes
-              - Full name in english: 6 names * 32 byte each
-              - Gender: 1 byte
-              - CPR expiry date: 8 bytes
-            */
-            const data = response.toString("utf8");
-            console.log(data);
+            // In this dedicated file, we have 6 elementary files
+
+            // Select first EF
+            const selectEf1 = Buffer.from("00A4020C020001", "hex");
+            const ef1Size = 2;
+            reader.transmit(
+              selectEf1,
+              ef1Size,
+              protocol,
+              function (err, response) {
+                if (err) {
+                  console.error("Error selecting first EF in CPR DF:", err);
+                } else {
+                  // Select first record
+                  const selectFirstRecord = Buffer.from("00B00000FF", "hex");
+                  const firstRecordSize = 257;
+                  reader.transmit(
+                    selectFirstRecord,
+                    firstRecordSize,
+                    protocol,
+                    function (err, response) {
+                      if (err) {
+                        console.error(
+                          "Error selecting first record in first EF in CPR DF:",
+                          err
+                        );
+                      } else {
+                        const data = response.toString("utf8");
+                        console.log(data);
+                      }
+                    }
+                  );
+                }
+              }
+            );
           }
         }
       );
