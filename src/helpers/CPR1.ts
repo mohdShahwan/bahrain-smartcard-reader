@@ -1,6 +1,15 @@
 import { SmartcardData } from "../types/smartcard-data";
 import processDateString from "./processDateString";
 
+/*
+  This EF contains:
+  - CPR Number
+  - Full name in English and Arabic
+  - Gender
+  - Birth Date
+  - Blood Group
+*/
+
 export function cpr1(reader, protocol): Promise<SmartcardData> {
   return new Promise(function (resolve, reject) {
     // Select first EF (CPR1)

@@ -1,6 +1,13 @@
 import { SmartcardData } from "../types/smartcard-data";
 import processDateString from "./processDateString";
 
+/*
+  This EF contains:
+  - Card Expiry Date
+  - Card Issue Date
+  - Issuing Authority
+*/
+
 export function cpr2(reader, protocol): Promise<SmartcardData> {
   return new Promise(function (resolve, reject) {
     // Select second EF (CPR2)

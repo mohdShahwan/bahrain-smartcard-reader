@@ -20,6 +20,8 @@ export interface SmartcardData {
   cardExpiryDate?: Date;
   cardIssueDate?: Date;
   issuingAuthority?: string;
+  photo?: string;
+  signature?: string;
   AddressArabic?: string;
   AddressEnglish?: string;
   CardCountry?: string;
@@ -113,8 +115,6 @@ export interface SmartcardData {
   PassportIssueDate?: string;
   PassportNumber?: string;
   PassportType?: string;
-  Photo?: string;
-  SignB64Encoded?: string;
   SponserId?: string;
   SponserNameArabic?: string;
   SponserNameEnglish?: string;
