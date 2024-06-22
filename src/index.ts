@@ -1,5 +1,5 @@
 import pcsc from "pcsclite";
-import { cpr1A, cpr1B, cpr1C } from "./helpers/CPR1";
+import { cpr1, cpr1A, cpr1B, cpr1C } from "./helpers/CPR1";
 import { SmartcardData } from "./types/smartcard-data";
 
 const pcsclite = pcsc();
@@ -23,59 +23,13 @@ function readSmartcard(reader, protocol) {
         selectCprDf,
         cprDfSize,
         protocol,
-        function (err, response) {
+        async function (err, response) {
           if (err) {
             console.error("Error selecting CPR dedicated file:", err);
           } else {
             // In this dedicated file, we have 6 elementary files
-
-            // Select first EF (CPR1)
-            const selectEf1 = Buffer.from("00A4020C020001", "hex");
-            const ef1Size = 2;
-            reader.transmit(
-              selectEf1,
-              ef1Size,
-              protocol,
-              async function (err, response) {
-                if (err) {
-                  console.error("Error selecting first EF in CPR DF:", err);
-                } else {
-                  const cpr1AData = await cpr1A(reader, protocol);
-                  const cpr1BData = await cpr1B(reader, protocol);
-                  const cpr1CData = await cpr1C(reader, protocol);
-
-                  const firstNameAr = (
-                    cpr1AData.firstNameAr + cpr1BData.firstNameAr
-                  ).trim();
-                  const middleNameAr4 = (
-                    cpr1BData.middleNameAr4 + cpr1CData.middleNameAr4
-                  ).trim();
-                  const { middleNameAr1, middleNameAr2, middleNameAr3 } =
-                    cpr1BData;
-                  const { lastNameAr } = cpr1CData;
-
-                  const fullNameAr = `${firstNameAr} ${
-                    middleNameAr1 ? middleNameAr1 + " " : ""
-                  }${middleNameAr2 ? middleNameAr2 + " " : ""}${
-                    middleNameAr3 ? middleNameAr3 + " " : ""
-                  }${middleNameAr4 ? middleNameAr4 + " " : ""}${lastNameAr}`;
-
-                  const cpr1Data: SmartcardData = {
-                    ...cpr1AData,
-                    ...cpr1BData,
-                    ...cpr1CData,
-                    firstNameAr,
-                    middleNameAr4,
-                    fullNameAr,
-                  };
-
-                  // Testing
-                  // setTimeout(function () {
-                  //   console.log(cpr1Data);
-                  // }, 500);
-                }
-              }
-            );
+            const cpr1Data = await cpr1(reader, protocol);
+            console.log(cpr1Data);
           }
         }
       );

@@ -1,6 +1,53 @@
 import { SmartcardData } from "../types/smartcard-data";
 import processDateString from "./processDateString";
 
+export function cpr1(reader, protocol): Promise<SmartcardData> {
+  return new Promise(function (resolve, reject) {
+    // Select first EF (CPR1)
+    const selectEf1 = Buffer.from("00A4020C020001", "hex");
+    const ef1Size = 2;
+    reader.transmit(
+      selectEf1,
+      ef1Size,
+      protocol,
+      async function (err, response) {
+        if (err) {
+          reject(`Error selecting first EF in CPR DF: ${err}`);
+        } else {
+          const cpr1AData = await cpr1A(reader, protocol);
+          const cpr1BData = await cpr1B(reader, protocol);
+          const cpr1CData = await cpr1C(reader, protocol);
+
+          const firstNameAr = (
+            cpr1AData.firstNameAr + cpr1BData.firstNameAr
+          ).trim();
+          const middleNameAr4 = (
+            cpr1BData.middleNameAr4 + cpr1CData.middleNameAr4
+          ).trim();
+          const { middleNameAr1, middleNameAr2, middleNameAr3 } = cpr1BData;
+          const { lastNameAr } = cpr1CData;
+
+          const fullNameAr = `${firstNameAr} ${
+            middleNameAr1 ? middleNameAr1 + " " : ""
+          }${middleNameAr2 ? middleNameAr2 + " " : ""}${
+            middleNameAr3 ? middleNameAr3 + " " : ""
+          }${middleNameAr4 ? middleNameAr4 + " " : ""}${lastNameAr}`;
+
+          const cpr1Data: SmartcardData = {
+            ...cpr1AData,
+            ...cpr1BData,
+            ...cpr1CData,
+            firstNameAr,
+            middleNameAr4,
+            fullNameAr,
+          };
+          resolve(cpr1Data);
+        }
+      }
+    );
+  });
+}
+
 export function cpr1A(reader, protocol): Promise<SmartcardData> {
   return new Promise(function (resolve, reject) {
     const cpr1Data: SmartcardData = {};
