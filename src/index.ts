@@ -68,6 +68,11 @@ function readSmartcard(reader, protocol) {
                     middleNameAr4,
                     fullNameAr,
                   };
+
+                  // Testing
+                  // setTimeout(function () {
+                  //   console.log(cpr1Data);
+                  // }, 500);
                 }
               }
             );
