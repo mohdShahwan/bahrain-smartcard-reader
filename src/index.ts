@@ -166,7 +166,7 @@ function readSmartcardV1(reader, protocol) {
 function readSmartcard(reader, protocol) {
   // Select application
   const selectApp = Buffer.from("00A404000DD4990000010101000100000001", "hex");
-  const appSize = 11100;
+  const appSize = 2;
   reader.transmit(selectApp, appSize, protocol, function (err, response) {
     if (err) {
       console.error("Error selecting application:", err);
@@ -184,7 +184,7 @@ function readSmartcard(reader, protocol) {
           } else {
             // In this dedicated file, we have 6 elementary files
 
-            // Select first EF
+            // Select first EF (CPR1)
             const selectEf1 = Buffer.from("00A4020C020001", "hex");
             const ef1Size = 2;
             reader.transmit(
@@ -195,6 +195,7 @@ function readSmartcard(reader, protocol) {
                 if (err) {
                   console.error("Error selecting first EF in CPR DF:", err);
                 } else {
+                  let cpr1Data: SmartcardData = {};
                   // Select first record
                   const selectFirstRecord = Buffer.from("00B00000FF", "hex");
                   const firstRecordSize = 257;
@@ -210,10 +211,62 @@ function readSmartcard(reader, protocol) {
                         );
                       } else {
                         const data = response.toString("utf8");
-                        console.log(data);
+
+                        //   cprNumber:
+                        //   data.substring(0, 9).trim().length === 8
+                        //     ? "0" + data.substring(0, 9).trim()
+                        //     : data.substring(0, 9).trim(),
+                        // firstNameEn: data.substring(9, 41).trim(),
+                        // middleName1En: data.substring(41, 73).trim(),
+                        // middleName2En: data.substring(73, 105).trim(),
+                        // middleName3En: data.substring(105, 137).trim(),
+                        // middleName4En: data.substring(137, 169).trim(),
+                        // lastNameEn: data.substring(169, 201).trim(),
+                        // firstNameAr: data.substring(201, data.length - 2).trim(),
+
+                        cpr1Data.cprNumber =
+                          data.substring(0, 9).trim().length === 8
+                            ? "0" + data.substring(0, 9).trim()
+                            : data.substring(0, 9).trim();
+                        cpr1Data.firstNameEn = data.substring(9, 41).trim();
+                        cpr1Data.middleNameEn1 = data.substring(41, 73).trim();
+                        cpr1Data.middleNameEn2 = data.substring(73, 105).trim();
+                        cpr1Data.middleNameEn3 = data
+                          .substring(105, 137)
+                          .trim();
+                        cpr1Data.middleNameEn4 = data
+                          .substring(137, 169)
+                          .trim();
+                        cpr1Data.lastNameEn = data.substring(169, 201).trim();
+                        const {
+                          firstNameEn,
+                          middleNameEn1,
+                          middleNameEn2,
+                          middleNameEn3,
+                          middleNameEn4,
+                          lastNameEn,
+                        } = cpr1Data;
+                        cpr1Data.fullNameEn = `${firstNameEn} ${
+                          middleNameEn1 ? middleNameEn1 + " " : ""
+                        }${middleNameEn2 ? middleNameEn2 + " " : ""}${
+                          middleNameEn3 ? middleNameEn3 + " " : ""
+                        }${
+                          middleNameEn4 ? middleNameEn4 + " " : ""
+                        }${lastNameEn}`;
+                        cpr1Data.firstNameAr = data
+                          .substring(201, data.length - 2)
+                          .trim();
                       }
                     }
                   );
+
+                  // Testing
+                  setTimeout(function () {
+                    console.log(cpr1Data);
+                  }, 1000);
+
+                  const selectSecondRecord = Buffer.from("00B000FFFF", "hex");
+                  const selectThirdRecord = Buffer.from("00B001FE57", "hex");
                 }
               }
             );
