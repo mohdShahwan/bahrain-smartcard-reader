@@ -8,12 +8,12 @@ export interface SmartcardData {
   lastNameEn?: string;
   fullNameEn?: string;
   firstNameAr?: string;
-  ArabicMiddleName2?: string;
-  ArabicMiddleName3?: string;
-  ArabicMiddleName4?: string;
-  ArabicMiddleName5?: string;
-  ArabicLastName?: string;
-  ArabicFullName?: string;
+  middleNameAr1?: string;
+  middleNameAr2?: string;
+  middleNameAr3?: string;
+  middleNameAr4?: string;
+  lastNameAr?: string;
+  fullNameAr?: string;
   AddressArabic?: string;
   AddressEnglish?: string;
   BirthDate?: string;
