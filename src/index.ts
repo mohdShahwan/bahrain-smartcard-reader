@@ -1,8 +1,8 @@
 import pcsc from "pcsclite";
-import { cpr1 } from "./helpers/CPR1";
-import { cpr2 } from "./helpers/CPR2";
+import { cpr1 } from "./elementary-files/CPR1";
+import { cpr2 } from "./elementary-files/CPR2";
 import { SmartcardData } from "./types/smartcard-data";
-import { cpr3 } from "./helpers/CPR3";
+import { cpr3 } from "./elementary-files/CPR3";
 
 const pcsclite = pcsc();
 

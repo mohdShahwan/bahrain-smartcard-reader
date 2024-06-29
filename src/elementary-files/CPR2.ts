@@ -1,5 +1,5 @@
 import { SmartcardData } from "../types/smartcard-data";
-import processDateString from "./processDateString";
+import processDateString from "../helpers/processDateString";
 
 /*
   This EF contains:
