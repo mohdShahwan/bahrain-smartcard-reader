@@ -32,11 +32,12 @@ function readSmartcard(reader, protocol) {
             // In this dedicated file, we have 6 elementary files
             const cpr1Data = await cpr1(reader, protocol);
             const cpr2Data = await cpr2(reader, protocol);
-            await cpr3(reader, protocol);
+            const cpr3Data = await cpr3(reader, protocol);
 
             const cprData: SmartcardData = {
               ...cpr1Data,
               ...cpr2Data,
+              ...cpr3Data,
             };
             console.log(cprData);
           }

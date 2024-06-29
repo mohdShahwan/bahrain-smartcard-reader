@@ -45,7 +45,6 @@ export function cpr3(reader, protocol): Promise<SmartcardData> {
             "00B00BF4FF",
             "00B00CF3FF",
             "00B00DF2FF",
-            // "00B00EF1FF",
           ];
           const photoBuffer = new Uint8Array(4000);
           let offset = 0;
@@ -59,7 +58,7 @@ export function cpr3(reader, protocol): Promise<SmartcardData> {
           ).subarray(0, 175);
           photoBuffer.set(buffer, offset);
 
-          arrayBufferToBase64(photoBuffer);
+          const photo = arrayBufferToBase64(photoBuffer);
 
           const signatureBinarySelectCommands = [
             "00B00FF0FF",
@@ -84,9 +83,14 @@ export function cpr3(reader, protocol): Promise<SmartcardData> {
             offset += buffer.length;
           }
 
-          console.log(arrayBufferToBase64(signatureBuffer));
+          const signature = arrayBufferToBase64(signatureBuffer);
 
-          // resolve(cpr2Data);
+          const cpr3Data: SmartcardData = {
+            photo,
+            signature,
+          }
+          
+          resolve(cpr3Data);
         }
       }
     );
