@@ -1,5 +1,6 @@
 import { SmartcardData } from "../types/smartcard-data";
-import processDateString from "./processDateString";
+import processDateString from "../utils/processDateString";
+import EF from "./EF";
 
 /*
   This EF contains:
@@ -9,6 +10,30 @@ import processDateString from "./processDateString";
   - Birth Date
   - Blood Group
 */
+
+export class CPR1 extends EF {
+  constructor() {
+    super();
+    this.size = 597;
+    this.selectCommand = "00A4020C020001";
+    this.buffer = new Uint8Array(this.size + 6);
+  }
+
+  firstNameArabic() {
+    // Create a new array with 64 elements
+    let numArray = new Uint8Array(64);
+
+    // Copy 64 bytes from 'this.buffer' starting at index 201 into 'numArray'
+    numArray.set(this.buffer.slice(201, 201 + 64), 0);
+    console.log(this.buffer);
+
+    // Convert the byte array to a string, trim any trailing spaces, and remove null characters
+    return new TextDecoder("utf-8")
+      .decode(numArray)
+      .trimEnd()
+      .replace(/\0/g, "");
+  }
+}
 
 export function cpr1(reader, protocol): Promise<SmartcardData> {
   return new Promise(function (resolve, reject) {

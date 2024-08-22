@@ -1,5 +1,5 @@
 import { SmartcardData } from "../types/smartcard-data";
-import { arrayBufferToBase64 } from "../helpers/arrayBufferToBase64";
+import { arrayBufferToBase64 } from "../utils/arrayBufferToBase64";
 
 export function cpr3(reader, protocol): Promise<SmartcardData> {
   return new Promise(function (resolve, reject) {
@@ -73,8 +73,8 @@ export function cpr3(reader, protocol): Promise<SmartcardData> {
           const cpr3Data: SmartcardData = {
             photo,
             signature,
-          }
-          
+          };
+
           resolve(cpr3Data);
         }
       }

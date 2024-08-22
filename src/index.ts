@@ -1,8 +1,8 @@
 import pcsc from "pcsclite";
-import { cpr1 } from "./elementary-files/CPR1";
-import { cpr2 } from "./elementary-files/CPR2";
-import { SmartcardData } from "./types/smartcard-data";
-import { cpr3 } from "./elementary-files/CPR3";
+import { CPR1 } from "./elementary-files/CPR1";
+import transmit from "./utils/transmit";
+import readBinaryData from "./utils/readBinaryData";
+import readEF from "./utils/readEF";
 
 const pcsclite = pcsc();
 
@@ -29,17 +29,9 @@ function readSmartcard(reader, protocol) {
           if (err) {
             console.error("Error selecting CPR dedicated file:", err);
           } else {
-            // In this dedicated file, we have 6 elementary files
-            const cpr1Data = await cpr1(reader, protocol);
-            const cpr2Data = await cpr2(reader, protocol);
-            const cpr3Data = await cpr3(reader, protocol);
+            const cpr1 = new CPR1();
+            await readEF(reader, protocol, cpr1);
 
-            const cprData: SmartcardData = {
-              ...cpr1Data,
-              ...cpr2Data,
-              ...cpr3Data,
-            };
-            console.log(cprData);
           }
         }
       );
@@ -73,7 +65,7 @@ pcsclite.on("reader", function (reader) {
         changes & this.SCARD_STATE_EMPTY &&
         status.state & this.SCARD_STATE_EMPTY
       ) {
-        console.log("card removed"); /* card removed */
+        console.log("card removed");
         reader.disconnect(reader.SCARD_LEAVE_CARD, function (err) {
           if (err) {
             console.log(err);
@@ -87,7 +79,7 @@ pcsclite.on("reader", function (reader) {
         changes & this.SCARD_STATE_PRESENT &&
         status.state & this.SCARD_STATE_PRESENT
       ) {
-        console.log("card inserted"); /* card inserted */
+        console.log("card inserted");
         reader.connect(
           { share_mode: this.SCARD_SHARE_SHARED },
           function (err, protocol) {

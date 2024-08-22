@@ -28,6 +28,7 @@ function getBinarySelectParams(offset: number, length: number) {
     length -= Le;
   }
   console.log(arr);
+  return arr;
 }
 
 function getLowAndHighBytes(offsetPos: number) {
@@ -35,4 +36,4 @@ function getLowAndHighBytes(offsetPos: number) {
   return [bytes[0], bytes[1]];
 }
 
-getBinarySelectParams(0, 6000);
+getBinarySelectParams(0, 597);
