@@ -3,8 +3,9 @@ import CPR from "./dedicated-files-functions/CPR";
 import GDNPR from "./dedicated-files-functions/GDNPR";
 import GDT from "./dedicated-files-functions/GDT";
 import readDF from "./utils/readDF";
-import { CardTypes } from "./types/smartcard-data";
+import { CardTypes, SmartcardData } from "./types/smartcard-data";
 import getInsertedCardType from "./utils/getInsertedCardType";
+import EF from "./elementary-files-classes/EF";
 
 const pcsclite = pcsc();
 
@@ -13,31 +14,42 @@ let globalProtocol: any = null;
 let globalAtr: string = null;
 
 // V4
-function readSmartcard(reader, protocol) {
-  // Select application
-  const selectApp = Buffer.from("00A404000DD4990000010101000100000001", "hex");
-  const appSize = 2;
-  reader.transmit(selectApp, appSize, protocol, async function (err, response) {
-    if (err) {
-      console.error("Error selecting application:", err);
-    } else {
-      // Select CPR dedicated file
-      const selectCprDf = "00A4000C020101";
-      const cprDfSize = 2;
-      await readDF(reader, protocol, selectCprDf, cprDfSize, CPR);
-      // Select GDNPR dedicated file
-      const selectGdnprDf = "00A4000C020301";
-      const gdnprDfSize = 2;
-      await readDF(reader, protocol, selectGdnprDf, gdnprDfSize, GDNPR);
-      // Select GDT dedicated file
-      const selectGdtDf = "00A4000C020201";
-      const gdtDfSize = 2;
-      await readDF(reader, protocol, selectGdtDf, gdtDfSize, GDT);
-    }
+function readSmartcard(reader, protocol): Promise<SmartcardData> {
+  return new Promise(function (resolve, reject) {
+    // Select application
+    const selectApp = Buffer.from(
+      "00A404000DD4990000010101000100000001",
+      "hex"
+    );
+    const appSize = 2;
+    reader.transmit(
+      selectApp,
+      appSize,
+      protocol,
+      async function (err, response) {
+        if (err) {
+          reject("Error selecting application:" + err);
+        } else {
+          // Select CPR dedicated file
+          const selectCprDf = "00A4000C020101";
+          const cprDfSize = 2;
+          await readDF(reader, protocol, selectCprDf, cprDfSize, CPR);
+          // Select GDNPR dedicated file
+          const selectGdnprDf = "00A4000C020301";
+          const gdnprDfSize = 2;
+          await readDF(reader, protocol, selectGdnprDf, gdnprDfSize, GDNPR);
+          // Select GDT dedicated file
+          const selectGdtDf = "00A4000C020201";
+          const gdtDfSize = 2;
+          await readDF(reader, protocol, selectGdtDf, gdtDfSize, GDT);
+          resolve(EF.smartcardData);
+        }
+      }
+    );
   });
 }
 
-function triggerFunction() {
+async function triggerFunction() {
   if (globalReader && globalProtocol && globalAtr) {
     console.log("Trigger condition met. Calling function...");
     const cardType: CardTypes = getInsertedCardType(globalAtr);
@@ -45,7 +57,8 @@ function triggerFunction() {
     else if (cardType === CardTypes.v2) console.log("Card type V2");
     else if (cardType === CardTypes.v4) console.log("Card type V4");
     else console.log("Unknown card type");
-    return readSmartcard(globalReader, globalProtocol);
+    const smartcardData = await readSmartcard(globalReader, globalProtocol);
+    return smartcardData;
   } else {
     console.log("Reader or protocol not available yet.");
     return null;
@@ -85,7 +98,7 @@ pcsclite.on("reader", function (reader) {
         console.log("card inserted");
         reader.connect(
           { share_mode: this.SCARD_SHARE_SHARED },
-          function (err, protocol) {
+          async function (err, protocol) {
             if (err) {
               console.log(err);
             } else {
@@ -95,7 +108,7 @@ pcsclite.on("reader", function (reader) {
               globalReader = reader;
               globalProtocol = protocol;
               globalAtr = atr;
-              triggerFunction();
+              console.log(await triggerFunction());
             }
           }
         );

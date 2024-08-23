@@ -1,13 +1,20 @@
 // T here is the type of object, this type can be one of the EF files result
 // Example: ICPR1, ICPR2, .....
 
+import { SmartcardData } from "../types/smartcard-data";
+
 export default class EF<T> {
   size?: number;
   selectCommand?: string;
   buffer?: Uint8Array;
   result?: T;
+  static smartcardData?: SmartcardData;
 
   populateResult() {}
+
+  assembleData() {
+    EF.smartcardData = { ...EF.smartcardData, ...this.result };
+  }
 
   decodeBytesToText(start: number, length: number): string {
     // Create a new array with (length) elements

@@ -18,6 +18,7 @@ export default function readEF(
         } else {
           ef.buffer = await readBinaryData(reader, protocol, 0, ef.size);
           ef.populateResult();
+          ef.assembleData();
           resolve(response);
         }
       }
