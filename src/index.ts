@@ -1,17 +1,18 @@
 import pcsc from "pcsclite";
-import { GDNPR1 } from "./elementary-files-classes/GDNPR1";
-import readEF from "./utils/readEF";
-import readDF from "./utils/readDF";
 import CPR from "./dedicated-files-functions/CPR";
 import GDNPR from "./dedicated-files-functions/GDNPR";
 import GDT from "./dedicated-files-functions/GDT";
+import readDF from "./utils/readDF";
+import { CardTypes } from "./types/smartcard-data";
+import getInsertedCardType from "./utils/getInsertedCardType";
 
 const pcsclite = pcsc();
 
 let globalReader: any = null;
 let globalProtocol: any = null;
+let globalAtr: string = null;
 
-// V2.1
+// V4
 function readSmartcard(reader, protocol) {
   // Select application
   const selectApp = Buffer.from("00A404000DD4990000010101000100000001", "hex");
@@ -37,8 +38,13 @@ function readSmartcard(reader, protocol) {
 }
 
 function triggerFunction() {
-  if (globalReader && globalProtocol) {
+  if (globalReader && globalProtocol && globalAtr) {
     console.log("Trigger condition met. Calling function...");
+    const cardType: CardTypes = getInsertedCardType(globalAtr);
+    if (cardType === CardTypes.v1) console.log("Card type V1");
+    else if (cardType === CardTypes.v2) console.log("Card type V2");
+    else if (cardType === CardTypes.v4) console.log("Card type V4");
+    else console.log("Unknown card type");
     return readSmartcard(globalReader, globalProtocol);
   } else {
     console.log("Reader or protocol not available yet.");
@@ -83,9 +89,12 @@ pcsclite.on("reader", function (reader) {
             if (err) {
               console.log(err);
             } else {
+              const atr = status.atr.toString("hex").toUpperCase();
+              console.log("ATR:", atr);
               console.log("Protocol(", reader.name, "):", protocol);
               globalReader = reader;
               globalProtocol = protocol;
+              globalAtr = atr;
               triggerFunction();
             }
           }

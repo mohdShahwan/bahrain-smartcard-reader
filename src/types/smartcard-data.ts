@@ -1,3 +1,10 @@
+export enum CardTypes {
+  v1,
+  v2,
+  v4,
+  unknown
+}
+
 export interface ICPR1 {
   cprNumber?: string;
   firstNameEn?: string;
