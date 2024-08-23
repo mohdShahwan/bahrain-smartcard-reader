@@ -25,9 +25,12 @@ export interface ICPR2 {
   issuingAuthority?: string;
 }
 
-export interface SmartcardData {
+export interface ICPR3 {
   photo?: string;
   signature?: string;
+}
+
+export interface SmartcardData {
   AddressArabic?: string;
   AddressEnglish?: string;
   CardCountry?: string;
