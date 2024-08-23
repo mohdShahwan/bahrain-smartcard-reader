@@ -6,6 +6,7 @@ import readEF from "./utils/readEF";
 import { CPR2 } from "./elementary-files/CPR2";
 import { CPR3 } from "./elementary-files/CPR3";
 import { CPR5 } from "./elementary-files/CPR5";
+import { CPR6 } from "./elementary-files/CPR6";
 
 const pcsclite = pcsc();
 
@@ -44,6 +45,9 @@ function readSmartcard(reader, protocol) {
             const cpr5 = new CPR5();
             await readEF(reader, protocol, cpr5);
             console.log(cpr5.result);
+            const cpr6 = new CPR6();
+            await readEF(reader, protocol, cpr6);
+            console.log(cpr6.result);
           }
         }
       );

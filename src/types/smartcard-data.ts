@@ -50,6 +50,24 @@ export interface ICPR5 {
   fullAddress?: string;
 }
 
+export interface ICPR6 {
+  occupationDescriptionEn?: string;
+  occupationDescriptionAr?: string;
+  employerNumber?: string;
+  employerNameEn?: string;
+  employerNameAr?: string;
+  employerFlag?: string;
+  employmentFlag?: string;
+  sponsorCPRNumberOrUnitNumber?: string;
+  sponsorNameEn?: string;
+  sponsorNameAr?: string;
+  sponsorFlag?: string;
+  laborForceParticipation?: string;
+  latestEducationDegreeEn?: string;
+  latestEducationDegreeAr?: string;
+  clearingAgentIndicator?: string;
+}
+
 export interface SmartcardData {
   CardCountry?: string;
   CardSerialNumber?: string;

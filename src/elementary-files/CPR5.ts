@@ -8,14 +8,11 @@ import EF from "./EF";
   - Residence Number
   - Flat Number
   - Building Number
-  - Building Alpha English
-  - Building Alpha Arabic
+  - Building Alpha in English and Arabic
   - Road Number
-  - Road Name English
-  - Road Name Arabic
+  - Road Name in English and Arabic
   - Block Number
-  - Block Name English
-  - Block Name Arabic
+  - Block Name in English and Arabic
   - Governorate Number
 */
 
