@@ -49,7 +49,7 @@ function readSmartcard(reader, protocol): Promise<SmartcardData> {
   });
 }
 
-async function triggerFunction() {
+export default async function triggerFunction() {
   if (globalReader && globalProtocol && globalAtr) {
     console.log("Trigger condition met. Calling function...");
     const cardType: CardTypes = getInsertedCardType(globalAtr);

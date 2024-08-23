@@ -27,7 +27,6 @@ export class GDNPR1 extends EF<IGDNPR1> {
       const nationalityCountry = countries.Countries.find(
         (c) => c._BAH_COUNTRY_CODE === nationality
       );
-      console.log(nationalityCountry);
       result.nationality.isoCode = nationalityCountry._ISO3166_CODE;
       result.nationality.alpha2Code = nationalityCountry._ALPHA2_CODE;
       result.nationality.alpha3Code = nationalityCountry._ALPHA3_CODE;
