@@ -1,12 +1,9 @@
 import pcsc from "pcsclite";
-import { CPR1 } from "./elementary-files/CPR1";
-import transmit from "./utils/transmit";
-import readBinaryData from "./utils/readBinaryData";
+import { GDNPR1 } from "./elementary-files/GDNPR1";
 import readEF from "./utils/readEF";
-import { CPR2 } from "./elementary-files/CPR2";
-import { CPR3 } from "./elementary-files/CPR3";
-import { CPR5 } from "./elementary-files/CPR5";
-import { CPR6 } from "./elementary-files/CPR6";
+import readDF from "./utils/readDF";
+import CPR from "./dedicated-files/CPR";
+import GDNPR from "./dedicated-files/GDNPR";
 
 const pcsclite = pcsc();
 
@@ -18,39 +15,18 @@ function readSmartcard(reader, protocol) {
   // Select application
   const selectApp = Buffer.from("00A404000DD4990000010101000100000001", "hex");
   const appSize = 2;
-  reader.transmit(selectApp, appSize, protocol, function (err, response) {
+  reader.transmit(selectApp, appSize, protocol, async function (err, response) {
     if (err) {
       console.error("Error selecting application:", err);
     } else {
       // Select CPR dedicated file
-      const selectCprDf = Buffer.from("00A4000C020101", "hex");
+      const selectCprDf = "00A4000C020101";
       const cprDfSize = 2;
-      reader.transmit(
-        selectCprDf,
-        cprDfSize,
-        protocol,
-        async function (err, response) {
-          if (err) {
-            console.error("Error selecting CPR dedicated file:", err);
-          } else {
-            const cpr1 = new CPR1();
-            await readEF(reader, protocol, cpr1);
-            console.log(cpr1.result);
-            const cpr2 = new CPR2();
-            await readEF(reader, protocol, cpr2);
-            console.log(cpr2.result);
-            const cpr3 = new CPR3();
-            await readEF(reader, protocol, cpr3);
-            console.log(cpr3.result);
-            const cpr5 = new CPR5();
-            await readEF(reader, protocol, cpr5);
-            console.log(cpr5.result);
-            const cpr6 = new CPR6();
-            await readEF(reader, protocol, cpr6);
-            console.log(cpr6.result);
-          }
-        }
-      );
+      await readDF(reader, protocol, selectCprDf, cprDfSize, CPR);
+      // Select GDNPR dedicated file
+      const selectGdnprDf = "00A4000C020301";
+      const gdnprDfSize = 2;
+      await readDF(reader, protocol, selectGdnprDf, gdnprDfSize, GDNPR);
     }
   });
 }

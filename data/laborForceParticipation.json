@@ -1,0 +1,54 @@
+{
+  "LabourForceParticipation": [
+    {
+      "_LfpId": "0",
+      "_LfpNameEnglish": "LESS THAN 15 YEARS",
+      "_LfpNameArabic": "أقل من 15 سنة"
+    },
+    {
+      "_LfpId": "1",
+      "_LfpNameEnglish": "WORKING",
+      "_LfpNameArabic": "يعمل"
+    },
+    {
+      "_LfpId": "2",
+      "_LfpNameEnglish": "HOME-MAKER",
+      "_LfpNameArabic": "متفرغة للمنزل"
+    },
+    {
+      "_LfpId": "3",
+      "_LfpNameEnglish": "STUDENT",
+      "_LfpNameArabic": "طالب"
+    },
+    {
+      "_LfpId": "4",
+      "_LfpNameEnglish": "UNENMPLOYED, WORKED BEFORE",
+      "_LfpNameArabic": "متعطل و سبق له العمل"
+    },
+    {
+      "_LfpId": "5",
+      "_LfpNameEnglish": "UNEMPLOYED, NEVER WORKED BEFORE",
+      "_LfpNameArabic": "متعطل لم يسبق له العمل"
+    },
+    {
+      "_LfpId": "6",
+      "_LfpNameEnglish": "UNABLE TO WORK",
+      "_LfpNameArabic": "غيرقادر على العمل"
+    },
+    {
+      "_LfpId": "7",
+      "_LfpNameEnglish": "SELF RECEIPTIAN",
+      "_LfpNameArabic": "مستكفي اقتصاديا"
+    },
+    {
+      "_LfpId": "8",
+      "_LfpNameEnglish": "RETIRED",
+      "_LfpNameArabic": "متقاعد"
+    },
+    {
+      "_LfpId": "9",
+      "_LfpNameEnglish": "NOT WORKING",
+      "_LfpNameArabic": "لايعمل"
+    }
+  ]
+}

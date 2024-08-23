@@ -68,6 +68,11 @@ export interface ICPR6 {
   clearingAgentIndicator?: string;
 }
 
+export interface IGDNPR1 {
+  nationality?: string;
+  birthCountry?: string;
+}
+
 export interface SmartcardData {
   CardCountry?: string;
   CardSerialNumber?: string;
