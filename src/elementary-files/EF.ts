@@ -1,5 +1,20 @@
-export default class EF {
+// T here is the type of object, this type can be one of the EF files result
+// Example: ICPR1, ICPR2, .....
+
+export default class EF<T> {
   size?: number;
   selectCommand?: string;
   buffer?: Uint8Array;
+  result?: T;
+
+  populateResult() {}
+
+  decodeBytesToText(start, length): string {
+    // Create a new array with (length) elements
+    let numArray = new Uint8Array(length);
+    // Copy length bytes from 'this.buffer' starting at index (start) into 'numArray'
+    numArray.set(this.buffer.slice(start, start + length), 0);
+    // Convert the byte array to a string, trim any trailing spaces, and remove null characters
+    return new TextDecoder("utf-8").decode(numArray).trim().replace(/\0/g, "");
+  }
 }

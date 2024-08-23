@@ -1,4 +1,4 @@
-export interface SmartcardData {
+export interface ICPR1 {
   cprNumber?: string;
   firstNameEn?: string;
   middleNameEn1?: string;
@@ -17,6 +17,9 @@ export interface SmartcardData {
   gender?: "M" | "F";
   birthDate?: Date;
   bloodGroup?: "A+" | "A-" | "B+" | "B-" | "O+" | "O-" | "AB+" | "AB-";
+}
+
+export interface SmartcardData {
   cardExpiryDate?: Date;
   cardIssueDate?: Date;
   issuingAuthority?: string;

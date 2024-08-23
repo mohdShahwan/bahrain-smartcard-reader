@@ -31,7 +31,7 @@ function readSmartcard(reader, protocol) {
           } else {
             const cpr1 = new CPR1();
             await readEF(reader, protocol, cpr1);
-
+            console.log(cpr1.result);
           }
         }
       );
