@@ -3,6 +3,7 @@ import { CPR1 } from "./elementary-files/CPR1";
 import transmit from "./utils/transmit";
 import readBinaryData from "./utils/readBinaryData";
 import readEF from "./utils/readEF";
+import { CPR2 } from "./elementary-files/CPR2";
 
 const pcsclite = pcsc();
 
@@ -32,6 +33,9 @@ function readSmartcard(reader, protocol) {
             const cpr1 = new CPR1();
             await readEF(reader, protocol, cpr1);
             console.log(cpr1.result);
+            const cpr2 = new CPR2();
+            await readEF(reader, protocol, cpr2);
+            console.log(cpr2.result);
           }
         }
       );

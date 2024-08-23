@@ -19,10 +19,13 @@ export interface ICPR1 {
   bloodGroup?: "A+" | "A-" | "B+" | "B-" | "O+" | "O-" | "AB+" | "AB-";
 }
 
-export interface SmartcardData {
+export interface ICPR2 {
   cardExpiryDate?: Date;
   cardIssueDate?: Date;
   issuingAuthority?: string;
+}
+
+export interface SmartcardData {
   photo?: string;
   signature?: string;
   AddressArabic?: string;

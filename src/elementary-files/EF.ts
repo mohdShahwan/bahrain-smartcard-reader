@@ -9,7 +9,7 @@ export default class EF<T> {
 
   populateResult() {}
 
-  decodeBytesToText(start, length): string {
+  decodeBytesToText(start: number, length: number): string {
     // Create a new array with (length) elements
     let numArray = new Uint8Array(length);
     // Copy length bytes from 'this.buffer' starting at index (start) into 'numArray'
