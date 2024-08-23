@@ -1,4 +1,4 @@
-import { ICPR3, SmartcardData } from "../types/smartcard-data";
+import { ICPR3 } from "../types/smartcard-data";
 import { arrayBufferToBase64 } from "../utils/arrayBufferToBase64";
 import EF from "./EF";
 

@@ -5,13 +5,14 @@ import readBinaryData from "./utils/readBinaryData";
 import readEF from "./utils/readEF";
 import { CPR2 } from "./elementary-files/CPR2";
 import { CPR3 } from "./elementary-files/CPR3";
+import { CPR5 } from "./elementary-files/CPR5";
 
 const pcsclite = pcsc();
 
 let globalReader: any = null;
 let globalProtocol: any = null;
 
-// V2
+// V2.1
 function readSmartcard(reader, protocol) {
   // Select application
   const selectApp = Buffer.from("00A404000DD4990000010101000100000001", "hex");
@@ -40,6 +41,9 @@ function readSmartcard(reader, protocol) {
             const cpr3 = new CPR3();
             await readEF(reader, protocol, cpr3);
             console.log(cpr3.result);
+            const cpr5 = new CPR5();
+            await readEF(reader, protocol, cpr5);
+            console.log(cpr5.result);
           }
         }
       );

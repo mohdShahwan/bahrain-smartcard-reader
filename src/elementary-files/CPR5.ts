@@ -1,23 +1,74 @@
-// import { SmartcardData } from "../types/smartcard-data";
+import { ICPR5 } from "../types/smartcard-data";
+import EF from "./EF";
 
-// export function cpr2(reader, protocol): Promise<SmartcardData> {
-//     return new Promise(function (resolve, reject) {
-//       // Select second EF (CPR2)
-//       const selectEf2 = Buffer.from("00A4020C020002", "hex");
-//       const ef2Size = 2;
-//       reader.transmit(
-//         selectEf2,
-//         ef2Size,
-//         protocol,
-//         async function (err, response) {
-//           if (err) {
-//             reject(`Error selecting second EF in CPR DF: ${err}`);
-//           } else {
-//             // const cpr2Data = await cpr2A(reader, protocol);
-  
-//             resolve(cpr2Data);
-//           }
-//         }
-//       );
-//     });
-//   }
+/*
+  This EF contains:
+  - Email
+  - Contact Number
+  - Residence Number
+  - Flat Number
+  - Building Number
+  - Building Alpha English
+  - Building Alpha Arabic
+  - Road Number
+  - Road Name English
+  - Road Name Arabic
+  - Block Number
+  - Block Name English
+  - Block Name Arabic
+  - Governorate Number
+*/
+
+export class CPR5 extends EF<ICPR5> {
+  constructor() {
+    super();
+    this.size = 512;
+    this.selectCommand = "00A4020C020005";
+    this.buffer = new Uint8Array(this.size);
+    this.result = { address: {} };
+  }
+
+  populateResult() {
+    const result = this.result;
+
+    result.email = this.decodeBytesToText(0, 64);
+    result.contactNumber = this.decodeBytesToText(64, 12);
+
+    const address = result.address;
+    address.residenceNumber = this.decodeBytesToText(76, 12);
+    address.flatNumber = this.decodeBytesToText(105, 4);
+    address.buildingNumber = this.decodeBytesToText(109, 4);
+    address.buildingAlphaEn = this.decodeBytesToText(113, 1);
+    address.buildingAlphaAr = this.decodeBytesToText(114, 2);
+    address.roadNumber = this.decodeBytesToText(116, 4);
+    address.roadNameEn = this.decodeBytesToText(120, 64);
+    address.roadNameAr = this.decodeBytesToText(184, 128);
+    address.blockNumber = this.decodeBytesToText(312, 4);
+    address.blockNameEn = this.decodeBytesToText(316, 64);
+    address.blockNameAr = this.decodeBytesToText(380, 128);
+    address.governorateNumber = this.decodeBytesToText(508, 4);
+    const {
+      flatNumber,
+      buildingNumber,
+      buildingAlphaEn,
+      roadNumber,
+      roadNameEn,
+      roadNameAr,
+      blockNumber,
+      blockNameEn,
+      blockNameAr,
+      governorateNumber,
+    } = address;
+    // Full address
+    let fullAddress = "";
+    fullAddress += flatNumber ? `Flat/Villa ${flatNumber}` : "";
+    fullAddress += buildingNumber ? ` Bldg #:${buildingNumber}` : "";
+    fullAddress += buildingAlphaEn ? ` Bldg Alpha:${buildingAlphaEn}` : "";
+    fullAddress += roadNumber ? ` Road:${roadNumber}` : "";
+    fullAddress += roadNameEn ? ` Rd Name:${roadNameEn}/${roadNameAr}` : "";
+    fullAddress += blockNumber ? ` Block #:${blockNumber}` : "";
+    fullAddress += blockNameEn ? ` Block:${blockNameEn}/${blockNameAr}` : "";
+    fullAddress += governorateNumber ? ` Gov #: ${governorateNumber}` : "";
+    result.fullAddress = fullAddress;
+  }
+}

@@ -30,9 +30,27 @@ export interface ICPR3 {
   signature?: string;
 }
 
+export interface ICPR5 {
+  email?: string;
+  contactNumber?: string;
+  address: {
+    residenceNumber?: string;
+    flatNumber?: string;
+    buildingNumber?: string;
+    buildingAlphaEn?: string;
+    buildingAlphaAr?: string;
+    roadNumber?: string;
+    roadNameEn?: string;
+    roadNameAr?: string;
+    blockNumber?: string;
+    blockNameEn?: string;
+    blockNameAr?: string;
+    governorateNumber?: string;
+  };
+  fullAddress?: string;
+}
+
 export interface SmartcardData {
-  AddressArabic?: string;
-  AddressEnglish?: string;
   CardCountry?: string;
   CardSerialNumber?: string;
   CardVersion?: string;

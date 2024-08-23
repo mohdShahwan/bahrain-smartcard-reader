@@ -15,6 +15,6 @@ export default class EF<T> {
     // Copy length bytes from 'this.buffer' starting at index (start) into 'numArray'
     numArray.set(this.buffer.slice(start, start + length), 0);
     // Convert the byte array to a string, trim any trailing spaces, and remove null characters
-    return new TextDecoder("utf-8").decode(numArray).trim().replace(/\0/g, "");
+    return new TextDecoder("utf-8").decode(numArray).replace(/\0/g, "").trim();
   }
 }
