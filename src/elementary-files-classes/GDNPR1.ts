@@ -3,7 +3,8 @@ import EF from "./EF";
 
 /*
   This EF contains:
-  - 
+  - Nationality code
+  - Birth country
 */
 
 export class GDNPR1 extends EF<IGDNPR1> {

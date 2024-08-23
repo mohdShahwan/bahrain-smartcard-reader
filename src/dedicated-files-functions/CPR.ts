@@ -1,8 +1,8 @@
-import { CPR1 } from "../elementary-files/CPR1";
-import { CPR2 } from "../elementary-files/CPR2";
-import { CPR3 } from "../elementary-files/CPR3";
-import { CPR5 } from "../elementary-files/CPR5";
-import { CPR6 } from "../elementary-files/CPR6";
+import { CPR1 } from "../elementary-files-classes/CPR1";
+import { CPR2 } from "../elementary-files-classes/CPR2";
+import { CPR3 } from "../elementary-files-classes/CPR3";
+import { CPR5 } from "../elementary-files-classes/CPR5";
+import { CPR6 } from "../elementary-files-classes/CPR6";
 import readEF from "../utils/readEF";
 
 export default async function CPR(reader, protocol) {

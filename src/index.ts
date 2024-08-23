@@ -1,9 +1,9 @@
 import pcsc from "pcsclite";
-import { GDNPR1 } from "./elementary-files/GDNPR1";
+import { GDNPR1 } from "./elementary-files-classes/GDNPR1";
 import readEF from "./utils/readEF";
 import readDF from "./utils/readDF";
-import CPR from "./dedicated-files/CPR";
-import GDNPR from "./dedicated-files/GDNPR";
+import CPR from "./dedicated-files-functions/CPR";
+import GDNPR from "./dedicated-files-functions/GDNPR";
 
 const pcsclite = pcsc();
 

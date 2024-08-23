@@ -73,6 +73,14 @@ export interface IGDNPR1 {
   birthCountry?: string;
 }
 
+export interface IGDNPR2 {
+  passportNumber?: string;
+  passportType?: string;
+  passportSequenceNumber?: string;
+  issueDate?: Date;
+  expiryDate?: Date;
+}
+
 export interface SmartcardData {
   CardCountry?: string;
   CardSerialNumber?: string;

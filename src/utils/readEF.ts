@@ -1,4 +1,4 @@
-import EF from "../elementary-files/EF";
+import EF from "../elementary-files-classes/EF";
 import readBinaryData from "./readBinaryData";
 
 export default function readEF(
