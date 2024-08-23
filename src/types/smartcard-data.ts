@@ -81,6 +81,15 @@ export interface IGDNPR2 {
   expiryDate?: Date;
 }
 
+export interface IGDNPR3 {
+  visaNumber?: string;
+  visaExpiryDate?: Date;
+  visaType?: string;
+  residentPermitNumber?: string;
+  residentPermitExpiryDate?: Date;
+  typeOfResident?: string;
+}
+
 export interface SmartcardData {
   CardCountry?: string;
   CardSerialNumber?: string;

@@ -4,8 +4,11 @@ import EF from "./EF";
 
 /*
   This EF contains:
-  - Nationality code
-  - Birth country
+  - Passport number
+  - Passport type
+  - Passport sequence number
+  - Issue date
+  - Expiry date
 */
 
 export class GDNPR2 extends EF<IGDNPR2> {
