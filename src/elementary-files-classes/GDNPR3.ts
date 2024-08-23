@@ -4,8 +4,12 @@ import EF from "./EF";
 
 /*
   This EF contains:
-  - Nationality code
-  - Birth country
+  - Visa number
+  - Visa expiry date
+  - Visa type
+  - Resident permit number
+  - Resident permit expiry date
+  - Type of resident
 */
 
 export class GDNPR3 extends EF<IGDNPR3> {

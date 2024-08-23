@@ -90,6 +90,11 @@ export interface IGDNPR3 {
   typeOfResident?: string;
 }
 
+export interface IGDT2 {
+  disabilityCode?: string;
+  visionCode?: string;
+}
+
 export interface SmartcardData {
   CardCountry?: string;
   CardSerialNumber?: string;

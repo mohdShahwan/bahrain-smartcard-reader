@@ -4,6 +4,7 @@ import readEF from "./utils/readEF";
 import readDF from "./utils/readDF";
 import CPR from "./dedicated-files-functions/CPR";
 import GDNPR from "./dedicated-files-functions/GDNPR";
+import GDT from "./dedicated-files-functions/GDT";
 
 const pcsclite = pcsc();
 
@@ -27,6 +28,10 @@ function readSmartcard(reader, protocol) {
       const selectGdnprDf = "00A4000C020301";
       const gdnprDfSize = 2;
       await readDF(reader, protocol, selectGdnprDf, gdnprDfSize, GDNPR);
+      // Select GDT dedicated file
+      const selectGdtDf = "00A4000C020201";
+      const gdtDfSize = 2;
+      await readDF(reader, protocol, selectGdtDf, gdtDfSize, GDT);
     }
   });
 }
