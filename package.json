@@ -20,7 +20,8 @@
   "keywords": [
     "Bahrain",
     "Smartcard",
-    "Reader"
+    "Reader",
+    "CPR"
   ],
   "devDependencies": {
     "tsup": "^8.2.4",
