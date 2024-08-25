@@ -64,6 +64,8 @@ export interface ICPR5 {
     blockNameEn?: string;
     blockNameAr?: string;
     governorateNumber?: string;
+    governorateNameEn?: string;
+    governorateNameAr?: string;
   };
   fullAddress?: string;
 }

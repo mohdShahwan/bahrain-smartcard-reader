@@ -1,4 +1,4 @@
-import { ICPR2, SmartcardData } from "../types/smartcard-data";
+import { ICPR2, SmartcardData } from "../types";
 import processDateString from "../utils/processDateString";
 import EF from "./EF";
 

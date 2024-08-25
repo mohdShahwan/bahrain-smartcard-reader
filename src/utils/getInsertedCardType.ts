@@ -1,4 +1,4 @@
-import { CardTypes } from "../types/smartcard-data";
+import { CardTypes } from "../types";
 
 export default function getInsertedCardType(knownATR: string): CardTypes {
   if (knownATR === "3B670000A81041" || knownATR.startsWith("3B670000A81041")) {

@@ -1,7 +1,7 @@
 // T here is the type of object, this type can be one of the EF files result
 // Example: ICPR1, ICPR2, .....
 
-import { SmartcardData } from "../types/smartcard-data";
+import { SmartcardData } from "../types";
 
 export default class EF<T> {
   size?: number;

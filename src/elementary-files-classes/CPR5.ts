@@ -1,5 +1,6 @@
-import { ICPR5 } from "../types/smartcard-data";
+import { ICPR5 } from "../types";
 import EF from "./EF";
+import governorates from "../../data/governorates.json";
 
 /*
   This EF contains:
@@ -56,6 +57,20 @@ export class CPR5 extends EF<ICPR5> {
       blockNameAr,
       governorateNumber,
     } = address;
+    if (blockNumber) {
+      const governorate = governorates.GovernorateList.Governorates.find(
+        (governorate) =>
+          governorate.Governorate.some(
+            (block) => block._BlockID === blockNumber
+          )
+      );
+      address.governorateNameEn = governorate
+        ? governorate._GovernorateNameEnglish
+        : "";
+      address.governorateNameAr = governorate
+        ? governorate._GovernorateNameArabic
+        : "";
+    }
     // Full address
     let fullAddress = "";
     fullAddress += flatNumber ? `Flat/Villa ${flatNumber}` : "";

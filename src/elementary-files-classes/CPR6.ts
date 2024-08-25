@@ -1,4 +1,4 @@
-import { ICPR6 } from "../types/smartcard-data";
+import { ICPR6 } from "../types";
 import EF from "./EF";
 
 /*

@@ -1,4 +1,4 @@
-import { IGDNPR2 } from "../types/smartcard-data";
+import { IGDNPR2 } from "../types";
 import processDateString from "../utils/processDateString";
 import EF from "./EF";
 

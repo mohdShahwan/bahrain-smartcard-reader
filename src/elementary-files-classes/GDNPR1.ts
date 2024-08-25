@@ -1,4 +1,4 @@
-import { IGDNPR1 } from "../types/smartcard-data";
+import { IGDNPR1 } from "../types";
 import EF from "./EF";
 import countries from "../../data/countries.json";
 

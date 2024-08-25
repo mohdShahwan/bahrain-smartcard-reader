@@ -3,7 +3,7 @@ import CPR from "./dedicated-files-functions/CPR";
 import GDNPR from "./dedicated-files-functions/GDNPR";
 import GDT from "./dedicated-files-functions/GDT";
 import readDF from "./utils/readDF";
-import { CardTypes, SmartcardData } from "./types/smartcard-data";
+import { CardTypes, SmartcardData } from "./types";
 import getInsertedCardType from "./utils/getInsertedCardType";
 import EF from "./elementary-files-classes/EF";
 

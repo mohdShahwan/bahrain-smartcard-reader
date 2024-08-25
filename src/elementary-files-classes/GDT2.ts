@@ -1,4 +1,4 @@
-import { IGDT2 } from "../types/smartcard-data";
+import { IGDT2 } from "../types";
 import processDateString from "../utils/processDateString";
 import EF from "./EF";
 
